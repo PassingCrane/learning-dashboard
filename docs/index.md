@@ -1,8 +1,9 @@
 # Learning Dashboard
 
 ## Summary
-## Current Focus
-## Technical Score Snapshot
-## HTB Snapshot
-## Recent Updates
-## Links
+
+- Total Score: 0.0
+- Machines Solved: 12
+
+## Top Skills
+
