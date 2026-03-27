@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Radar</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 2rem; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Skill Radar</h1>
+    <canvas id="radarChart"></canvas>
+
+    <table>
+      <thead>
+        <tr><th>Skill</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>web</td><td>70.0</td></tr>
+<tr><td>network</td><td>62.0</td></tr>
+<tr><td>ad</td><td>58.0</td></tr>
+<tr><td>maldev</td><td>45.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const labels = ["web", "network", "ad", "maldev"];
+    const values = [70.0, 62.0, 58.0, 45.0];
+    new Chart(document.getElementById('radarChart'), {
+      type: 'radar',
+      data: {
+        labels,
+        datasets: [{ label: 'Skill Radar', data: values }]
+      },
+      options: {
+        responsive: true,
+        scales: { r: { beginAtZero: true, suggestedMax: 100 } }
+      }
+    });
+  </script>
+</body>
+</html>

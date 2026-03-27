@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "category": "ad",
+      "score": 58.0
+    },
+    {
+      "category": "network",
+      "score": 62.0
+    },
+    {
+      "category": "web",
+      "score": 70.0
+    }
+  ]
+}

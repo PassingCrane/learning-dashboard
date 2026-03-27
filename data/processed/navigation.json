@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "title": "Dashboard",
+      "path": "index.md"
+    },
+    {
+      "title": "Technical Score",
+      "path": "technical-score.md"
+    },
+    {
+      "title": "HTB Overview",
+      "path": "htb-overview.md"
+    },
+    {
+      "title": "Recent Activity",
+      "path": "recent-activity.md"
+    },
+    {
+      "title": "Skill Radar",
+      "path": "skill-radar.html"
+    }
+  ]
+}

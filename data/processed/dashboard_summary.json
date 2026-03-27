@@ -1,22 +1,28 @@
 {
-  "last_updated": "2026-03-27",
-  "summary": {
-    "technical_score": 68,
-    "htb_total": 12,
-    "main_focus": "Active Directory"
-  },
-  "links": [
+  "generated_at": "2026-03-27T07:37:17.415933+00:00",
+  "headline": "Learning Dashboard",
+  "technical_score_total": 190.0,
+  "top_skills": [
     {
-      "title": "Technical Score",
-      "path": "technical-score.md"
+      "name": "web",
+      "score": 70.0
     },
     {
-      "title": "Skill Radar",
-      "path": "skill-radar.md"
+      "name": "network",
+      "score": 62.0
     },
     {
-      "title": "HTB Overview",
-      "path": "htb-overview.md"
+      "name": "ad",
+      "score": 58.0
+    },
+    {
+      "name": "maldev",
+      "score": 45.0
     }
-  ]
+  ],
+  "htb_total_machines": 12,
+  "meta": {
+    "owner": "example",
+    "updated_by": "workflow"
+  }
 }

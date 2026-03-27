@@ -1,15 +1,14 @@
 {
-  "last_updated": "2026-03-27",
-  "current_focus": [
-    "Active Directory",
-    "Windows Privilege Escalation",
-    "EDR Bypass"
-  ],
-  "recent_logs": [
+  "headline": "Learning Dashboard",
+  "meta": {
+    "owner": "example",
+    "updated_by": "workflow"
+  },
+  "recent_activity": [
     {
-      "date": "2026-03-26",
-      "title": "Weekly review",
-      "path": "logs/2026/2026-03/2026-03-26.md"
+      "date": "2026-03-27",
+      "title": "dashboard bootstrap",
+      "summary": "Initial scaffold created."
     }
   ]
 }

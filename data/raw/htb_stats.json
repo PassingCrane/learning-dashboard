@@ -1,21 +1,10 @@
 {
   "machines": {
     "total": 12,
-    "windows": {
-      "easy": 4,
-      "medium": 2,
-      "hard": 0
-    },
-    "linux": {
-      "easy": 3,
-      "medium": 2,
-      "hard": 1
-    }
+    "windows": {"total": 7},
+    "linux": {"total": 5}
   },
-  "tags": {
-    "active-directory": 5,
-    "kerberos": 3,
-    "bloodhound": 2
-  },
-  "last_updated": "2026-03-27"
+  "challenges": {"total": 0},
+  "academy": {"modules": 0},
+  "meta": {"last_updated": "2026-03-27"}
 }

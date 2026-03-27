@@ -1,5 +1,4 @@
 # Recent Activity
 
-## Recent Logs
-## Recent HTB Progress
-## Current Themes
+- **2026-03-27 dashboard bootstrap**
+  - Initial scaffold created.

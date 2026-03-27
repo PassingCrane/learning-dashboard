@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Radar</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 2rem; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Skill Radar</h1>
+    <canvas id="radarChart"></canvas>
+
+    <table>
+      <thead>
+        <tr><th>Skill</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        {{TABLE_ROWS}}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const labels = {{RADAR_LABELS_JSON}};
+    const values = {{RADAR_VALUES_JSON}};
+    new Chart(document.getElementById('radarChart'), {
+      type: 'radar',
+      data: {
+        labels,
+        datasets: [{ label: 'Skill Radar', data: values }]
+      },
+      options: {
+        responsive: true,
+        scales: { r: { beginAtZero: true, suggestedMax: 100 } }
+      }
+    });
+  </script>
+</body>
+</html>

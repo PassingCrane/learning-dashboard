@@ -1,0 +1,20 @@
+{
+  "machines": {
+    "total": 12,
+    "windows": {
+      "total": 7
+    },
+    "linux": {
+      "total": 5
+    }
+  },
+  "challenges": {
+    "total": 0
+  },
+  "academy": {
+    "modules": 0
+  },
+  "meta": {
+    "last_updated": "2026-03-27"
+  }
+}
