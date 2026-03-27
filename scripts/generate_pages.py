@@ -27,7 +27,7 @@ def build_index():
 
 """
 
-    for item in data["top_skills"]:
+    for item in data.get("top_skills", []):
         md += f"- {item['name']}: {item['score']}\n"
 
     write("index.md", md)

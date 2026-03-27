@@ -31,10 +31,10 @@ def to_number(value):
 
     if isinstance(value, dict):
         for key in ("score", "value", "current", "points"):
-            if key in value and isinstance(value[key], (int, float, str)):
+            if key in value:
                 try:
                     return float(value[key])
-                except ValueError:
+                except (TypeError, ValueError):
                     return None
 
     return None
@@ -65,9 +65,8 @@ def build_summary():
 
     total_score = 0
     if isinstance(skill, dict):
-        raw_total = skill.get("total", 0)
         try:
-            total_score = float(raw_total)
+            total_score = float(skill.get("total", 0))
         except (TypeError, ValueError):
             total_score = 0
 
@@ -75,9 +74,8 @@ def build_summary():
     if isinstance(htb, dict):
         machines = htb.get("machines", {})
         if isinstance(machines, dict):
-            raw_total = machines.get("total", 0)
             try:
-                machines_total = int(raw_total)
+                machines_total = int(machines.get("total", 0))
             except (TypeError, ValueError):
                 machines_total = 0
 
@@ -103,12 +101,10 @@ def build_htb():
 
 def build_recent():
     metrics = load_json("learning_metrics.json")
-
     if isinstance(metrics, dict):
         recent = metrics.get("recent", [])
         if isinstance(recent, list):
             return recent
-
     return []
 
 
