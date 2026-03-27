@@ -1,13 +1,12 @@
 # Learning Dashboard
 
-## Technical Score
-{{TECHNICAL_SCORE_TOTAL}}
-
-## HTB Progress
-Total Machines: {{HTB_TOTAL_MACHINES}}
+- Technical Score Total: **190.0**
+- HTB Machines: **12**
+- Generated At: `2026-03-27T09:47:10.057580+00:00`
 
 ## Top Skills
-{{TOP_SKILLS}}
 
----
-Generated at: {{GENERATED_AT}}
+- web: 70.0
+- network: 62.0
+- ad: 58.0
+- maldev: 45.0
