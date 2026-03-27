@@ -1,0 +1,22 @@
+{
+  "last_updated": "2026-03-27",
+  "summary": {
+    "technical_score": 68,
+    "htb_total": 12,
+    "main_focus": "Active Directory"
+  },
+  "links": [
+    {
+      "title": "Technical Score",
+      "path": "technical-score.md"
+    },
+    {
+      "title": "Skill Radar",
+      "path": "skill-radar.md"
+    },
+    {
+      "title": "HTB Overview",
+      "path": "htb-overview.md"
+    }
+  ]
+}

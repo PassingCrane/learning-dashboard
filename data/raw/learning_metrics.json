@@ -1,0 +1,15 @@
+{
+  "last_updated": "2026-03-27",
+  "current_focus": [
+    "Active Directory",
+    "Windows Privilege Escalation",
+    "EDR Bypass"
+  ],
+  "recent_logs": [
+    {
+      "date": "2026-03-26",
+      "title": "Weekly review",
+      "path": "logs/2026/2026-03/2026-03-26.md"
+    }
+  ]
+}
