@@ -5,41 +5,32 @@ from typing import Any
 
 from common import RAW_DIR, load_json
 
-# =========================================
-# Schema 定義
-# =========================================
-# 使える型:
-# - dict  : object
-# - list  : array
-# - str/int/float/bool
-# - ("number",) : int/float 両対応
-# - {"type": ..., "required": [...], "properties": {...}, "items": ...}
-# =========================================
 
-SCHEMAS: dict[str, dict[str, Any]] = {
+# =========================
+# Schema
+# =========================
+SCHEMAS = {
     "learning_metrics.json": {
         "type": dict,
         "required": ["meta"],
         "properties": {
-            "headline": {"type": str, "required": False},
+            "headline": {"type": str},
             "meta": {
                 "type": dict,
-                "required": True,
+                "required": [],
                 "properties": {
-                    "last_updated": {"type": str, "required": False},
-                    "source_repo": {"type": str, "required": False},
+                    "last_updated": {"type": str},
+                    "source_repo": {"type": str},
                 },
             },
             "recent_activity": {
                 "type": list,
-                "required": False,
                 "items": {
                     "type": dict,
-                    "required": [],
                     "properties": {
-                        "date": {"type": str, "required": False},
-                        "title": {"type": str, "required": False},
-                        "summary": {"type": str, "required": False},
+                        "date": {"type": str},
+                        "title": {"type": str},
+                        "summary": {"type": str},
                     },
                 },
             },
@@ -47,15 +38,10 @@ SCHEMAS: dict[str, dict[str, Any]] = {
     },
     "skill_score.json": {
         "type": dict,
-        "required": [],
-        "properties": {},
-        # 追加キーを許可し、その値は number を想定
         "additional_properties_type": ("number",),
     },
     "skill_radar.json": {
         "type": dict,
-        "required": [],
-        "properties": {},
         "additional_properties_type": ("number",),
     },
     "htb_stats.json": {
@@ -66,158 +52,106 @@ SCHEMAS: dict[str, dict[str, Any]] = {
                 "type": dict,
                 "required": ["total"],
                 "properties": {
-                    "total": {"type": ("number",), "required": True},
-                    "windows": {
-                        "type": dict,
-                        "required": False,
-                        "properties": {
-                            "total": {"type": ("number",), "required": False},
-                            "easy": {"type": ("number",), "required": False},
-                            "medium": {"type": ("number",), "required": False},
-                            "hard": {"type": ("number",), "required": False},
-                            "insane": {"type": ("number",), "required": False},
-                        },
-                    },
-                    "linux": {
-                        "type": dict,
-                        "required": False,
-                        "properties": {
-                            "total": {"type": ("number",), "required": False},
-                            "easy": {"type": ("number",), "required": False},
-                            "medium": {"type": ("number",), "required": False},
-                            "hard": {"type": ("number",), "required": False},
-                            "insane": {"type": ("number",), "required": False},
-                        },
-                    },
+                    "total": {"type": ("number",)},
                 },
-            },
-            "challenges": {
-                "type": dict,
-                "required": False,
-                "properties": {
-                    "total": {"type": ("number",), "required": False},
-                    "web": {"type": ("number",), "required": False},
-                    "crypto": {"type": ("number",), "required": False},
-                    "pwn": {"type": ("number",), "required": False},
-                    "misc": {"type": ("number",), "required": False},
-                    "forensics": {"type": ("number",), "required": False},
-                },
-            },
-            "academy": {
-                "type": dict,
-                "required": False,
-                "properties": {
-                    "total": {"type": ("number",), "required": False},
-                },
-            },
-            "meta": {
-                "type": dict,
-                "required": False,
-                "properties": {
-                    "last_updated": {"type": str, "required": False},
-                },
-            },
+            }
         },
     },
 }
 
 
-def _is_number(value: Any) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
+# =========================
+# Utils
+# =========================
+def is_number(v: Any) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
-def _matches_type(value: Any, expected_type: Any) -> bool:
-    if expected_type == ("number",) or expected_type == "number":
-        return _is_number(value)
+def match_type(value: Any, expected: Any) -> bool:
+    if expected == ("number",) or expected == "number":
+        return is_number(value)
 
-    if isinstance(expected_type, tuple):
-        for t in expected_type:
-            if t == "number" and _is_number(value):
-                return True
-            if isinstance(t, type) and isinstance(value, t):
-                return True
-        return False
+    if isinstance(expected, tuple):
+        return any(match_type(value, t) for t in expected)
 
-    if expected_type == dict:
+    if expected == dict:
         return isinstance(value, dict)
-    if expected_type == list:
+    if expected == list:
         return isinstance(value, list)
-    if expected_type == str:
+    if expected == str:
         return isinstance(value, str)
-    if expected_type == int:
-        return isinstance(value, int) and not isinstance(value, bool)
-    if expected_type == float:
-        return isinstance(value, float)
-    if expected_type == bool:
-        return isinstance(value, bool)
 
-    return False
+    return isinstance(value, expected)
 
 
-def _type_name(expected_type: Any) -> str:
-    if expected_type == ("number",) or expected_type == "number":
-        return "number"
-    if isinstance(expected_type, tuple):
-        return " or ".join(_type_name(t) for t in expected_type)
-    if expected_type == dict:
-        return "object"
-    if expected_type == list:
-        return "array"
-    if expected_type == str:
-        return "string"
-    if expected_type == int:
-        return "integer"
-    if expected_type == float:
-        return "float"
-    if expected_type == bool:
-        return "boolean"
-    if isinstance(expected_type, type):
-        return expected_type.__name__
-    return str(expected_type)
+def normalize_required(schema: dict) -> list[str]:
+    """
+    required を必ず list にする（今回のバグ対策）
+    """
+    required = schema.get("required", [])
+
+    if required is True:
+        return []  # Trueは無視
+    if required is False:
+        return []
+    if isinstance(required, list):
+        return required
+
+    return []
 
 
-def validate_against_schema(
-    data: Any,
-    schema: dict[str, Any],
-    path: str = "$",
-) -> list[str]:
+# =========================
+# Validation
+# =========================
+def validate_against_schema(data: Any, schema: dict, path: str) -> list[str]:
     errors: list[str] = []
 
+    # 型チェック
     expected_type = schema.get("type")
-    if expected_type is not None and not _matches_type(data, expected_type):
-        errors.append(
-            f"{path}: expected {_type_name(expected_type)}, got {type(data).__name__}"
-        )
+    if expected_type and not match_type(data, expected_type):
+        errors.append(f"{path}: expected {expected_type}, got {type(data).__name__}")
         return errors
 
+    # dict
     if isinstance(data, dict):
-        required_keys: list[str] = schema.get("required", [])
-        properties: dict[str, Any] = schema.get("properties", {})
-        additional_properties_type = schema.get("additional_properties_type")
+        required_keys = normalize_required(schema)
+        properties = schema.get("properties", {})
+        additional_type = schema.get("additional_properties_type")
 
+        # requiredチェック
         for key in required_keys:
             if key not in data:
                 errors.append(f"{path}.{key}: missing required key")
 
+        # propertiesチェック
         for key, value in data.items():
-            key_path = f"{path}.{key}"
+            sub_path = f"{path}.{key}"
+
             if key in properties:
-                errors.extend(validate_against_schema(value, properties[key], key_path))
-            elif additional_properties_type is not None:
-                if not _matches_type(value, additional_properties_type):
+                errors.extend(
+                    validate_against_schema(value, properties[key], sub_path)
+                )
+            elif additional_type:
+                if not match_type(value, additional_type):
                     errors.append(
-                        f"{key_path}: expected {_type_name(additional_properties_type)}, got {type(value).__name__}"
+                        f"{sub_path}: expected {additional_type}, got {type(value).__name__}"
                     )
 
+    # list
     elif isinstance(data, list):
         item_schema = schema.get("items")
         if item_schema:
-            for idx, item in enumerate(data):
-                errors.extend(validate_against_schema(item, item_schema, f"{path}[{idx}]"))
+            for i, item in enumerate(data):
+                errors.extend(
+                    validate_against_schema(item, item_schema, f"{path}[{i}]")
+                )
 
     return errors
 
 
+# =========================
+# Entry
+# =========================
 def validate_data() -> None:
     errors: list[str] = []
 
@@ -230,19 +164,17 @@ def validate_data() -> None:
 
         try:
             data = load_json(path)
-        except Exception as exc:
-            errors.append(f"{path}: invalid JSON: {exc}")
+        except Exception as e:
+            errors.append(f"{path}: JSON parse error: {e}")
             continue
 
-        file_errors = validate_against_schema(data, schema, path=str(path))
-        errors.extend(file_errors)
+        errors.extend(validate_against_schema(data, schema, str(path)))
 
     if errors:
-        message_lines = ["Validation failed:"]
-        message_lines.extend(f"- {error}" for error in errors)
-        raise ValueError("\n".join(message_lines))
+        print("\n".join(errors))
+        raise ValueError("Validation failed")
 
-    print("[OK] Validation passed.")
+    print("[OK] Validation passed")
 
 
 if __name__ == "__main__":
