@@ -2,7 +2,6 @@
   "machines": {
     "total": 12,
     "windows": {
-<<<<<<< HEAD
       "total": 7
     },
     "linux": {
@@ -19,22 +18,3 @@
     "last_updated": "2026-03-27"
   }
 }
-=======
-      "easy": 4,
-      "medium": 2,
-      "hard": 0
-    },
-    "linux": {
-      "easy": 3,
-      "medium": 2,
-      "hard": 1
-    }
-  },
-  "tags": {
-    "active-directory": 5,
-    "kerberos": 3,
-    "bloodhound": 2
-  },
-  "last_updated": "2026-03-27"
-}
->>>>>>> 17e380e870a5a42f7853d2744769b5fe6928004f

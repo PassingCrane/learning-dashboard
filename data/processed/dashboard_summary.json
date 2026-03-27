@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "generated_at": "2026-03-27T07:37:17.415933+00:00",
   "headline": "Learning Dashboard",
   "technical_score_total": 190.0,
@@ -27,10 +26,3 @@
     "updated_by": "workflow"
   }
 }
-=======
-  "generated_at": "2026-03-27T06:31:23.532097+00:00",
-  "total_score": 0.0,
-  "machines_total": 12,
-  "top_skills": []
-}
->>>>>>> 17e380e870a5a42f7853d2744769b5fe6928004f

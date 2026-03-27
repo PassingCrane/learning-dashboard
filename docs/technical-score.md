@@ -1,5 +1,7 @@
 # Technical Score
 
-- last_updated: 2026-03-27
-- total_score: 68
-- domains: {'web': 78, 'network': 62, 'ad': 58, 'windows': 64, 'linux': 55, 'detection': 35, 'malware': 28}
+| Category | Score |
+|---|---:|
+| ad | 58.0 |
+| network | 62.0 |
+| web | 70.0 |

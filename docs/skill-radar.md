@@ -1,5 +1,0 @@
-# Skill Radar
-
-- labels: ['Web', 'Network', 'AD', 'Windows', 'Linux', 'Detection', 'Malware']
-- values: [78, 62, 58, 64, 55, 35, 28]
-- last_updated: 2026-03-27
