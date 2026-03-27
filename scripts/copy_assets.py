@@ -1,28 +1,24 @@
 from __future__ import annotations
 
 import shutil
-from pathlib import Path
 
-from common import DOCS_DIR, ROOT, ensure_dir
+from common import DOCS_DIR, ROOT
 
-SOURCE_ASSETS = ROOT / 'assets'
-TARGET_ASSETS = DOCS_DIR / 'assets'
+SOURCE_ASSETS = ROOT / "assets"
+TARGET_ASSETS = DOCS_DIR / "assets"
 
 
-def main() -> None:
+def copy_assets() -> None:
     if not SOURCE_ASSETS.exists():
-        print('No assets directory found. Skipped.')
+        print("[INFO] No assets directory found. Skipped.")
         return
 
-    for path in SOURCE_ASSETS.rglob('*'):
-        if path.is_dir():
-            continue
-        relative = path.relative_to(SOURCE_ASSETS)
-        target = TARGET_ASSETS / relative
-        ensure_dir(target.parent)
-        shutil.copy2(path, target)
-    print('Assets copied.')
+    if TARGET_ASSETS.exists():
+        shutil.rmtree(TARGET_ASSETS)
+
+    shutil.copytree(SOURCE_ASSETS, TARGET_ASSETS)
+    print(f"[OK] Assets copied -> {TARGET_ASSETS}")
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    copy_assets()
