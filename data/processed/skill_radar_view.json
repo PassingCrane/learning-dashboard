@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "items": [
     {
       "label": "web",
@@ -18,3 +19,25 @@
     }
   ]
 }
+=======
+  "labels": [
+    "Web",
+    "Network",
+    "AD",
+    "Windows",
+    "Linux",
+    "Detection",
+    "Malware"
+  ],
+  "values": [
+    78,
+    62,
+    58,
+    64,
+    55,
+    35,
+    28
+  ],
+  "last_updated": "2026-03-27"
+}
+>>>>>>> 17e380e870a5a42f7853d2744769b5fe6928004f
