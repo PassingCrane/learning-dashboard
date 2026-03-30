@@ -1,20 +1,32 @@
-name: Build & Deploy Dashboard
+name: Build and Deploy Pages
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
+    paths:
+      - "data/raw/**"
+      - "scripts/**"
+      - "templates/**"
+      - "assets/**"
+      - ".github/workflows/build-pages.yml"
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout learning-dashboard
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -24,16 +36,65 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
 
-      - name: Run build
-        run: |
-          python scripts/build_site.py
+      - name: Validate raw data
+        run: python scripts/validate_data.py
 
-      - name: Commit docs
+      - name: Build processed data
+        run: python scripts/build_dashboard_data.py
+
+      - name: Generate markdown pages
+        run: python scripts/generate_pages.py
+
+      - name: Ensure docs exist
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add docs
-          git diff --cached --quiet || git commit -m "update dashboard"
-          git push
+          if [ ! -f docs/index.md ]; then
+            echo "docs/index.md not found"
+            exit 1
+          fi
+
+      - name: Create root index.html (redirect)
+        run: |
+          if [ ! -f index.html ]; then
+            printf '%s\n' \
+              '<!DOCTYPE html>' \
+              '<html lang="ja">' \
+              '<head>' \
+              '  <meta charset="utf-8" />' \
+              '  <meta http-equiv="refresh" content="0; url=./docs/" />' \
+              '  <title>Learning Dashboard</title>' \
+              '</head>' \
+              '<body>' \
+              '  <p><a href="./docs/">Learning Dashboard</a></p>' \
+              '</body>' \
+              '</html>' \
+              > index.html
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          cp -R docs/* _site/
+          cp .nojekyll _site/.nojekyll || true
+          cp index.html _site/index.html || true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
