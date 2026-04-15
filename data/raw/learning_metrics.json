@@ -1,14 +1,8 @@
 {
-  "headline": "Learning Dashboard",
+  "headline": "",
   "meta": {
-    "owner": "example",
-    "updated_by": "workflow"
+    "last_updated": "2026-04-15T02:45:01.759638",
+    "source_repo": "security-learning"
   },
-  "recent_activity": [
-    {
-      "date": "2026-03-27",
-      "title": "dashboard bootstrap",
-      "summary": "Initial scaffold created."
-    }
-  ]
+  "recent_activity": []
 }

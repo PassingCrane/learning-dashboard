@@ -1,7 +1,5 @@
 {
-  "web": 70,
-  "network": 62,
-  "ad": 58,
-  "maldev": "45",
-  "notes": ["ignore this"]
+  "labels": 0,
+  "values": 0,
+  "last_updated": 0
 }
