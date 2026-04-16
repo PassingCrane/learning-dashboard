@@ -6,6 +6,7 @@ from common import DOCS_DIR, PROCESSED_DIR, TEMPLATES_DIR, load_json, load_text,
 def render_index() -> None:
     template = load_text(TEMPLATES_DIR / "markdown" / "index.template.md")
     summary = load_json(PROCESSED_DIR / "dashboard_summary.json")
+    malware = load_json(PROCESSED_DIR / "malware_view.json", default={})
 
     top_skills_lines = "\n".join(
         f"- {item['name']}: {item['score']}" for item in summary.get("top_skills", [])
@@ -19,6 +20,10 @@ def render_index() -> None:
             "HTB_TOTAL_MACHINES": summary.get("htb_total_machines", 0),
             "TOP_SKILLS": top_skills_lines,
             "GENERATED_AT": summary.get("generated_at", ""),
+            "MALWARE_YARA_RULES": malware.get("yara_rules", 0),
+            "MALWARE_SIGMA_RULES": malware.get("sigma_rules", 0),
+            "MALWARE_ANALYSIS_TOOLS": malware.get("analysis_tools", 0),
+            "MALWARE_DOCS": malware.get("docs", 0),
         },
     )
     save_text(DOCS_DIR / "index.md", content)

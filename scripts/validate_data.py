@@ -24,6 +24,14 @@ SCHEMAS = {
         "required": ["machines"],
         "strict": True,
     },
+    # malware-research-lab の export-summary.yml が生成・push する統計ファイル。
+    # ファイルが存在しない場合は警告のみ（optional）。
+    "malware_stats.json": {
+        "type": dict,
+        "required": ["meta", "detection"],
+        "strict": False,
+        "optional": True,
+    },
 }
 
 
@@ -39,6 +47,9 @@ def validate_data():
         path = RAW_DIR / filename
 
         if not path.exists():
+            if schema.get("optional"):
+                warnings.append(f"{path}: file not found (optional, skipping)")
+                continue
             errors.append(f"{path}: file not found")
             continue
 

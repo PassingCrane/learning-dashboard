@@ -91,6 +91,29 @@ def build_recent_activity() -> dict[str, Any]:
     return {"items": normalized}
 
 
+def build_malware_view() -> dict[str, Any]:
+    """malware-research-lab の統計を表示用に整形する。
+    ファイルが存在しない場合は空データを返す（optional）。
+    """
+    malware_stats = load_json(RAW_DIR / "malware_stats.json", default={})
+    if not isinstance(malware_stats, dict):
+        malware_stats = {}
+
+    detection = malware_stats.get("detection", {})
+    analysis_tools = malware_stats.get("analysis_tools", {})
+    docs = malware_stats.get("docs", {})
+    meta = malware_stats.get("meta", {})
+
+    return {
+        "available": bool(malware_stats),
+        "generated_at": meta.get("generated_at", ""),
+        "yara_rules": detection.get("yara_rules", 0),
+        "sigma_rules": detection.get("sigma_rules", 0),
+        "analysis_tools": analysis_tools.get("python_scripts", 0),
+        "docs": docs.get("markdown_files", 0),
+    }
+
+
 def build_navigation() -> dict[str, Any]:
     return {
         "items": [
@@ -109,6 +132,7 @@ def build_dashboard_data() -> None:
     save_json(PROCESSED_DIR / "skill_radar_view.json", build_skill_radar_view())
     save_json(PROCESSED_DIR / "htb_breakdown.json", build_htb_breakdown())
     save_json(PROCESSED_DIR / "recent_activity.json", build_recent_activity())
+    save_json(PROCESSED_DIR / "malware_view.json", build_malware_view())
     save_json(PROCESSED_DIR / "navigation.json", build_navigation())
     print("[OK] Processed data generated.")
 
