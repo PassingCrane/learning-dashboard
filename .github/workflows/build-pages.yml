@@ -44,27 +44,9 @@ jobs:
 
       - name: Ensure docs exist
         run: |
-          if [ ! -f docs/index.md ]; then
-            echo "docs/index.md not found"
+          if [ ! -f docs/index.html ]; then
+            echo "docs/index.html not found"
             exit 1
-          fi
-
-      - name: Create root index.html (redirect)
-        run: |
-          if [ ! -f index.html ]; then
-            printf '%s\n' \
-              '<!DOCTYPE html>' \
-              '<html lang="ja">' \
-              '<head>' \
-              '  <meta charset="utf-8" />' \
-              '  <meta http-equiv="refresh" content="0; url=./docs/" />' \
-              '  <title>Learning Dashboard</title>' \
-              '</head>' \
-              '<body>' \
-              '  <p><a href="./docs/">Learning Dashboard</a></p>' \
-              '</body>' \
-              '</html>' \
-              > index.html
           fi
 
       - name: Setup Pages
@@ -75,7 +57,6 @@ jobs:
           mkdir -p _site
           cp -R docs/* _site/
           cp .nojekyll _site/.nojekyll || true
-          cp index.html _site/index.html || true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
