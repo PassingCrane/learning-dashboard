@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{HEADLINE}}</title>
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <style>
+    body { font-family: sans-serif; margin: 2rem; line-height: 1.6; }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 { border-bottom: 2px solid #333; padding-bottom: 0.4rem; }
+    h2 { margin-top: 2rem; }
+    .stats { display: flex; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; }
+    .stat-card { border: 1px solid #ddd; border-radius: 6px; padding: 1rem 1.5rem; min-width: 140px; }
+    .stat-card .value { font-size: 2rem; font-weight: bold; }
+    .stat-card .label { color: #666; font-size: 0.9rem; }
+    .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .nav-links a { display: inline-block; padding: 0.4rem 0.8rem; border: 1px solid #333; border-radius: 4px; text-decoration: none; color: #333; }
+    .nav-links a:hover { background: #333; color: #fff; }
+    .skills-list { list-style: none; padding: 0; }
+    .skills-list li { display: flex; align-items: center; gap: 0.8rem; margin: 0.3rem 0; }
+    .skills-list .bar-wrap { flex: 1; background: #eee; border-radius: 4px; height: 12px; max-width: 300px; }
+    .skills-list .bar { background: #4a90e2; height: 12px; border-radius: 4px; }
+    .meta { color: #999; font-size: 0.85rem; margin-top: 3rem; }
+    .no-data { color: #999; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>{{HEADLINE}}</h1>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="value">{{TECHNICAL_SCORE_TOTAL}}</div>
+        <div class="label">Technical Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">{{HTB_TOTAL_MACHINES}}</div>
+        <div class="label">HTB Machines</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">{{MALWARE_YARA_RULES}}</div>
+        <div class="label">YARA Rules</div>
+      </div>
+    </div>
+
+    <h2>Top Skills</h2>
+    {{TOP_SKILLS_HTML}}
+
+    <h2>Pages</h2>
+    <nav class="nav-links">
+      <a href="skill-radar.html">Skill Radar</a>
+    </nav>
+
+    <p class="meta">Generated: {{GENERATED_AT}}</p>
+  </div>
+</body>
+</html>
