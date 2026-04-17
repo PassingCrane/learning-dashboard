@@ -1,5 +1,24 @@
 {
-  "labels": 0,
-  "values": 0,
-  "last_updated": 0
+  "items": [
+    {
+      "label": "web",
+      "value": 50.0
+    },
+    {
+      "label": "network",
+      "value": 26.67
+    },
+    {
+      "label": "cloud",
+      "value": 18.0
+    },
+    {
+      "label": "blue_team",
+      "value": 18.0
+    }
+  ],
+  "meta": {
+    "last_updated": "2026-04-17T21:59:06.584399+00:00",
+    "source_repo": "security-learning"
+  }
 }
