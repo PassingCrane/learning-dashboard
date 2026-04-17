@@ -1,6 +1,31 @@
 {
-  "machines": {},
-  "challenges": {},
-  "academy": {},
-  "meta": {}
+  "machines": {
+    "total": 1,
+    "windows": {
+      "total": 1,
+      "easy": 1,
+      "medium": 0,
+      "hard": 0
+    },
+    "linux": {
+      "total": 0,
+      "easy": 0,
+      "medium": 0,
+      "hard": 0
+    }
+  },
+  "challenges": {
+    "total": 0,
+    "web": 0,
+    "crypto": 0,
+    "pwn": 0,
+    "misc": 0,
+    "forensics": 0
+  },
+  "academy": {
+    "modules": 0
+  },
+  "meta": {
+    "last_updated": "2026-04-16T00:49:59Z"
+  }
 }
