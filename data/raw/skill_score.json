@@ -1,5 +1,13 @@
 {
-  "total_score": 0,
-  "domain_scores": 0,
-  "last_updated": 0
+  "total_score": 1.0,
+  "domain_scores": {
+    "web": 50.0,
+    "network": 26.67,
+    "cloud": 18.0,
+    "blue_team": 18.0
+  },
+  "meta": {
+    "last_updated": "2026-04-16T21:33:41.919763+00:00",
+    "source_repo": "security-learning"
+  }
 }

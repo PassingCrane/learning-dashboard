@@ -1,7 +1,11 @@
 {
-  "headline": "",
+  "headline": "Learning Dashboard",
+  "learning_days": 4,
+  "public_writeups": 0,
+  "projects": 1,
+  "weekly_reviews": 0,
   "meta": {
-    "last_updated": "2026-04-15T22:02:39.688438",
+    "last_updated": "2026-04-16T21:33:41.880840+00:00",
     "source_repo": "security-learning"
   },
   "recent_activity": []
