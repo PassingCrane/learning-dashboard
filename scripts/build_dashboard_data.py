@@ -6,27 +6,86 @@ from typing import Any
 from common import PROCESSED_DIR, RAW_DIR, collect_numeric_items, load_json, save_json
 
 
+def extract_domain_scores(skill_score: dict[str, Any]) -> list[tuple[str, float]]:
+    domain_scores = skill_score.get("domain_scores", {})
+    if isinstance(domain_scores, dict):
+        items = collect_numeric_items(domain_scores)
+        if items:
+            return items
+    return collect_numeric_items(skill_score if isinstance(skill_score, dict) else {})
+
+
+def extract_radar_items(skill_radar: dict[str, Any]) -> list[tuple[str, float]]:
+    items = skill_radar.get("items", [])
+    parsed: list[tuple[str, float]] = []
+
+    if isinstance(items, list):
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            label = item.get("label")
+            score = item.get("value")
+            if isinstance(label, str):
+                number = score if isinstance(score, (int, float)) else None
+                if number is not None:
+                    parsed.append((label, float(number)))
+        if parsed:
+            return parsed
+
+    labels = skill_radar.get("labels", [])
+    values = skill_radar.get("values", [])
+    if isinstance(labels, list) and isinstance(values, list):
+        for label, value in zip(labels, values):
+            if not isinstance(label, str):
+                continue
+            if isinstance(value, (int, float)):
+                parsed.append((label, float(value)))
+        if parsed:
+            return parsed
+
+    return collect_numeric_items(skill_radar if isinstance(skill_radar, dict) else {})
+
+
+def normalize_machine_stats(htb_stats: dict[str, Any]) -> dict[str, Any]:
+    machines = htb_stats.get("machines", {})
+    if isinstance(machines, dict):
+        return machines
+
+    total = htb_stats.get("total_solves", 0)
+    easy = htb_stats.get("easy", 0)
+    medium = htb_stats.get("medium", 0)
+    hard = htb_stats.get("hard", 0)
+    return {
+        "total": total,
+        "windows": {"total": 0, "easy": 0, "medium": 0, "hard": 0},
+        "linux": {"total": total, "easy": easy, "medium": medium, "hard": hard},
+    }
+
+
 def build_summary() -> dict[str, Any]:
     learning_metrics = load_json(RAW_DIR / "learning_metrics.json", default={})
     skill_score = load_json(RAW_DIR / "skill_score.json", default={})
     skill_radar = load_json(RAW_DIR / "skill_radar.json", default={})
     htb_stats = load_json(RAW_DIR / "htb_stats.json", default={})
 
-    numeric_scores = collect_numeric_items(skill_score if isinstance(skill_score, dict) else {})
-    numeric_radar = collect_numeric_items(skill_radar if isinstance(skill_radar, dict) else {})
+    numeric_scores = extract_domain_scores(skill_score if isinstance(skill_score, dict) else {})
+    numeric_radar = extract_radar_items(skill_radar if isinstance(skill_radar, dict) else {})
 
     top_skills = [
         {"name": name, "score": score}
         for name, score in sorted(numeric_radar, key=lambda x: x[1], reverse=True)[:5]
     ]
 
-    machines = htb_stats.get("machines", {}) if isinstance(htb_stats, dict) else {}
+    machines = normalize_machine_stats(htb_stats) if isinstance(htb_stats, dict) else {}
     total_machines = machines.get("total", 0) if isinstance(machines, dict) else 0
+    technical_total = skill_score.get("total_score", 0) if isinstance(skill_score, dict) else 0
+    if not isinstance(technical_total, (int, float)):
+        technical_total = round(sum(score for _, score in numeric_scores), 2)
 
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "headline": learning_metrics.get("headline", "Learning Dashboard"),
-        "technical_score_total": round(sum(score for _, score in numeric_scores), 2),
+        "technical_score_total": technical_total,
         "top_skills": top_skills,
         "htb_total_machines": total_machines,
         "meta": learning_metrics.get("meta", {}),
@@ -38,7 +97,7 @@ def build_technical_score_view() -> dict[str, Any]:
     items = [
         {"category": name, "score": score}
         for name, score in sorted(
-            collect_numeric_items(skill_score if isinstance(skill_score, dict) else {}),
+            extract_domain_scores(skill_score if isinstance(skill_score, dict) else {}),
             key=lambda x: x[0].lower(),
         )
     ]
@@ -50,7 +109,7 @@ def build_skill_radar_view() -> dict[str, Any]:
     items = [
         {"label": name, "value": score}
         for name, score in sorted(
-            collect_numeric_items(skill_radar if isinstance(skill_radar, dict) else {}),
+            extract_radar_items(skill_radar if isinstance(skill_radar, dict) else {}),
             key=lambda x: x[1],
             reverse=True,
         )
@@ -60,7 +119,7 @@ def build_skill_radar_view() -> dict[str, Any]:
 
 def build_htb_breakdown() -> dict[str, Any]:
     htb_stats = load_json(RAW_DIR / "htb_stats.json", default={})
-    machines = htb_stats.get("machines", {}) if isinstance(htb_stats, dict) else {}
+    machines = normalize_machine_stats(htb_stats) if isinstance(htb_stats, dict) else {}
     return {
         "machines": machines,
         "challenges": htb_stats.get("challenges", {}),

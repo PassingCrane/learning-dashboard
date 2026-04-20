@@ -2,6 +2,7 @@
 
 | Category | Score |
 |---|---:|
-| ad | 58.0 |
-| network | 62.0 |
-| web | 70.0 |
+| blue_team | 18.0 |
+| cloud | 18.0 |
+| network | 26.67 |
+| web | 50.0 |

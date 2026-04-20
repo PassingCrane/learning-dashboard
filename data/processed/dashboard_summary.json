@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026-03-27T09:38:58.290229+00:00",
+  "generated_at": "2026-04-17T00:00:00Z",
   "headline": "Learning Dashboard",
-  "technical_score_total": 190.0,
+  "technical_score_total": 1.0,
   "top_skills": [
     {
       "name": "web",
-      "score": 70.0
+      "score": 50.0
     },
     {
       "name": "network",
-      "score": 62.0
+      "score": 26.67
     },
     {
-      "name": "ad",
-      "score": 58.0
+      "name": "cloud",
+      "score": 18.0
     },
     {
-      "name": "maldev",
-      "score": 45.0
+      "name": "blue_team",
+      "score": 18.0
     }
   ],
-  "htb_total_machines": 12,
+  "htb_total_machines": 2,
   "meta": {
-    "owner": "example",
-    "updated_by": "workflow"
+    "last_updated": "2026-04-16T21:33:41.880840+00:00",
+    "source_repo": "security-learning"
   }
 }
